@@ -151,7 +151,7 @@ private[remote] class OutboundHandshake(
         scheduleOnce(InjectHandshakeTick, injectHandshakeInterval)
         outboundContext.associationState.lastUsedTimestamp.set(System.nanoTime())
         if (isAvailable(out))
-          push(out, createHandshakeReqEnvolope())
+          push(out, createHandshakeReqEnvelope())
       }
 
       private def pushLivenessProbeReq(): Unit = {
@@ -164,12 +164,12 @@ private[remote] class OutboundHandshake(
             log.info(
               "Association to [{}] has been idle for [{}] seconds, sending HandshakeReq to validate liveness",
               outboundContext.remoteAddress, lastUsedDuration.toSeconds)
-            push(out, createHandshakeReqEnvolope())
+            push(out, createHandshakeReqEnvelope())
           }
         }
       }
 
-      private def createHandshakeReqEnvolope(): OutboundEnvelope = {
+      private def createHandshakeReqEnvelope(): OutboundEnvelope = {
         outboundEnvelopePool.acquire().init(
           recipient = OptionVal.None, message = HandshakeReq(outboundContext.localAddress, outboundContext.remoteAddress), sender = OptionVal.None)
       }

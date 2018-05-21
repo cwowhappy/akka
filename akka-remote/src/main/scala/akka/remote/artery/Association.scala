@@ -471,12 +471,12 @@ private[remote] class Association(
                     "Association to [{}] having UID [{}] has been stopped. All " +
                       "messages to this UID will be delivered to dead letters. Reason: {}",
                     remoteAddress, u, reason)
-                  transport.system.eventStream.publish(HarmlessQuarantinedEvent(UniqueAddress(remoteAddress, u), reason))
+                  transport.system.eventStream.publish(GracefulShutdownQuarantinedEvent(UniqueAddress(remoteAddress, u), reason))
                 } else {
                   log.warning(
                     "Association to [{}] with UID [{}] is irrecoverably failed. UID is now quarantined and all " +
                       "messages to this UID will be delivered to dead letters. " +
-                      "Remote actorsystem must be restarted to recover from this situation. Reason: {}",
+                      "Remote ActorSystem must be restarted to recover from this situation. Reason: {}",
                     remoteAddress, u, reason)
                   transport.system.eventStream.publish(QuarantinedEvent(remoteAddress, u))
                 }
